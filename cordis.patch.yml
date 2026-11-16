@@ -1,4 +1,4 @@
 # dsh-provider-label bundle patch — inserts the plugin row into a profile.
 - insert:
     - id: dsh-provider-label
-      name: dsh-provider-label
+      name: "@qiuxy/dsh-provider-label"

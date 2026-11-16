@@ -20,9 +20,27 @@ already puts on the label wrapper and prepends "Provider · " with one scoped `:
 
 ## Install
 
+From npm (after release):
+
 ```sh
 dsh plugin --profile web add @qiuxy/dsh-provider-label
 ```
+
+From GitHub source (works before the npm release):
+
+```sh
+dsh plugin --profile web add github:tanqvv/dsh-provider-label
+```
+
+From a local tarball:
+
+```sh
+dsh plugin --profile web add file:/absolute/path/qiuxy-dsh-provider-label-1.0.1.tgz
+```
+
+After installing, make sure `"@qiuxy/dsh-provider-label"` is listed in the profile's
+`dsh.profile.bundles` (the GUI plugin manager does this for you; with the CLI add it manually
+if missing), then restart the host.
 
 Then reload the host (desktop: Ctrl+R; `dsh web`: restart the process).
 

@@ -26,11 +26,28 @@
 
 ## 安装
 
+npm（发布后）：
+
 ```sh
 dsh plugin --profile web add @qiuxy/dsh-provider-label
 # 或桌面端 profile
 dsh plugin --profile desktop add @qiuxy/dsh-provider-label
 ```
+
+从 GitHub 源码安装（不必等 npm）：
+
+```sh
+dsh plugin --profile web add github:tanqvv/dsh-provider-label
+```
+
+离线压缩包：
+
+```sh
+dsh plugin --profile web add file:/absolute/path/qiuxy-dsh-provider-label-1.0.1.tgz
+```
+
+安装后确认 profile 的 `package.json` → `dsh.profile.bundles` 里有 `"@qiuxy/dsh-provider-label"`
+（GUI 插件管理器会自动加；CLI 装的话没有就手动补一行，然后重启宿主）。
 
 装完重启/刷新宿主（桌面端 Ctrl+R，`dsh web` 重启进程）即可看到效果。
 
