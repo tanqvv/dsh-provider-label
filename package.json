@@ -1,6 +1,6 @@
 {
   "name": "@qiuxy/dsh-provider-label",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Show which provider a model comes from in the DeepSeek Harness model chip — works even when another plugin owns the label slot. · 在 DeepSeek Harness 的模型按钮上显示模型来自哪个供应商，即使标签槽已被其它插件占用也有效。",
   "type": "module",
   "main": "lib/index.js",

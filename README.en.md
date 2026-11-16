@@ -35,7 +35,7 @@ dsh plugin --profile web add github:tanqvv/dsh-provider-label
 From a local tarball:
 
 ```sh
-dsh plugin --profile web add file:/absolute/path/qiuxy-dsh-provider-label-1.0.1.tgz
+dsh plugin --profile web add file:/absolute/path/qiuxy-dsh-provider-label-1.0.2.tgz
 ```
 
 After installing, make sure `"@qiuxy/dsh-provider-label"` is listed in the profile's

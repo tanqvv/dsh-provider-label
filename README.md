@@ -43,7 +43,7 @@ dsh plugin --profile web add github:tanqvv/dsh-provider-label
 离线压缩包：
 
 ```sh
-dsh plugin --profile web add file:/absolute/path/qiuxy-dsh-provider-label-1.0.1.tgz
+dsh plugin --profile web add file:/absolute/path/qiuxy-dsh-provider-label-1.0.2.tgz
 ```
 
 安装后确认 profile 的 `package.json` → `dsh.profile.bundles` 里有 `"@qiuxy/dsh-provider-label"`
