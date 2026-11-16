@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh">
+<head><meta charset="utf-8"><title>dsh-provider-label test</title>
+<style>
+  button[aria-haspopup="menu"] { display:flex; gap:4px; font:13px/20px system-ui; padding:4px 8px; }
+  .triggerLabel { overflow:hidden; white-space:nowrap; }
+  [role="menu"] { display:block; font:13px/20px system-ui; padding:8px; }
+</style></head>
+<body>
+  <!-- composer trigger: the structure the core ModelSelect renders -->
+  <button aria-haspopup="menu" aria-label="选择模型">
+    <span class="triggerLabel"><span data-provider-id="opencode-go" data-model-id="deepseek-v4.1-flash">DeepSeek V4.1 Flash</span></span>
+    <span class="triggerEffort">High</span>
+  </button>
+
+  <!-- already-labelled case: another plugin's label already shows the provider -->
+  <button aria-haspopup="menu" aria-label="选择模型 2" id="labelled">
+    <span class="triggerLabel"><span data-provider-id="deepseek-account" data-model-id="deepseek-flash">DeepSeek 账号 · DeepSeek Flash</span></span>
+  </button>
+
+  <!-- menu rows must stay untouched -->
+  <div role="menu">
+    <div data-provider-id="opencode-go" data-model-id="deepseek-v4.1-flash">DeepSeek V4.1 Flash</div>
+  </div>
+
+  <pre id="result">PENDING</pre>
+  <script>
+    window.__RESULTS__ = []
+    function record(name, ok, detail) { window.__RESULTS__.push({ name: name, ok: ok, detail: detail || '' }) }
+    window.__ModuleLoader__ = {
+      load: function (def) { window.__PLUGIN__ = def }
+    }
+  </script>
+  <script src="../lib/client.js"></script>
+  <script>
+    (function () {
+      try {
+        var captured = []
+        var factory = window.__PLUGIN__.factory
+        var mod = factory(function (id) { captured.push(id); return {} })
+        mod.apply({ effect: function (fn) { var cleanup = fn(); window.__DISPOSE__ = cleanup; return function () {} } })
+        setTimeout(function () {
+          var w = document.querySelector('button[aria-haspopup="menu"] [data-provider-id="opencode-go"]')
+          var before = getComputedStyle(w, '::before').content
+          record('trigger shows provider', before.indexOf('OpenCode Go') !== -1 && before.indexOf('\u00b7') !== -1, before)
+
+          var labelled = document.querySelector('#labelled [data-provider-id="deepseek-account"]')
+          var labelledBefore = getComputedStyle(labelled, '::before').content
+          record('does not duplicate existing label', labelledBefore === 'none' || labelledBefore === '' || labelledBefore === 'normal', labelledBefore)
+
+          var menu = document.querySelector('[role="menu"] [data-provider-id]')
+          var menuBefore = getComputedStyle(menu, '::before').content
+          record('menu rows untouched', menuBefore === 'none' || menuBefore === '' || menuBefore === 'normal', menuBefore)
+
+          record('no DOM nodes injected', w.childNodes.length === 1 && w.childNodes[0].nodeType === 3, 'childNodes=' + w.childNodes.length)
+
+          var style = document.getElementById('dsh-provider-label-style')
+          record('style injected once', style !== null && document.querySelectorAll('#dsh-provider-label-style').length === 1, '')
+          record('css scoped to composer button', style !== null && style.textContent.indexOf('button[aria-haspopup="menu"]') === 0, '')
+
+          // dispose removes the style again
+          if (typeof window.__DISPOSE__ === 'function') window.__DISPOSE__()
+          record('dispose removes style', document.getElementById('dsh-provider-label-style') === null, '')
+
+          var failed = window.__RESULTS__.filter(function (r) { return !r.ok })
+          document.getElementById('result').textContent = (failed.length === 0 ? 'ALL-PASS ' : 'FAIL ' + failed.length + ' ')
+            + JSON.stringify(window.__RESULTS__)
+          document.title = failed.length === 0 ? 'ALL-PASS' : 'FAIL'
+        }, 120)
+      } catch (error) {
+        document.getElementById('result').textContent = 'ERROR ' + (error && error.stack || error)
+        document.title = 'ERROR'
+      }
+    })()
+  </script>
+</body></html>
